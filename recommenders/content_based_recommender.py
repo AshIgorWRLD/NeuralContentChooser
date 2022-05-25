@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-from recommenders import prediction
+from recommenders import recommend_realiser
 from utils import printer
 
 
@@ -52,16 +52,10 @@ def create_cosine_similarity_matrix(metadata):
     show_calculated_word_statistic(tfidf)
 
     cosine_similarity_matrix = calculate_cosine_simulation_matrix(tfidf_matrix)
-    return cosine_similarity_matrix
+    return metadata, cosine_similarity_matrix
 
 
-def run(metadata, titles_as_indices):
-    cosine_similarity_matrix = create_cosine_similarity_matrix(metadata)
+def run(metadata, titles_as_indices, films_to_recommend):
+    metadata, cosine_similarity_matrix = create_cosine_similarity_matrix(metadata)
 
-    printer.print_data("Сгенерированные предсказания для 'The Dark Knight Rises'",
-                       prediction.get_recommendations(metadata, titles_as_indices, cosine_similarity_matrix,
-                                                      'The Dark Knight Rises'))
-
-    printer.print_data("Сгенерированные предсказания для 'The Godfather'",
-                       prediction.get_recommendations(metadata, titles_as_indices, cosine_similarity_matrix,
-                                                      'The Godfather'))
+    recommend_realiser.recommend(metadata, titles_as_indices, cosine_similarity_matrix, films_to_recommend)

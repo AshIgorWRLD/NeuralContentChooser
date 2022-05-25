@@ -5,9 +5,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from utils.converters import data_feature_converter, data_type_converter, my_data_format_converter
+from recommenders import recommend_realiser
 from utils import merger, printer
-from recommenders import prediction
+from utils.converters import data_feature_converter, data_type_converter, my_data_format_converter
 
 
 def join_columns(x):
@@ -44,7 +44,8 @@ def refactor_data(metadata, cast, keywords):
 
     metadata = data_feature_converter.convert_array_with_axis(metadata, ['soup'], join_columns, 1)
 
-    printer.print_data("Пример новых данных основанных на ключевых словах, занесенных в датасет", metadata[['soup']].head(5))
+    printer.print_data("Пример новых данных основанных на ключевых словах, занесенных в датасет",
+                       metadata[['soup']].head(5))
     return metadata
 
 
@@ -62,7 +63,7 @@ def reset_indexes(metadata):
     return metadata, new_titles_as_indices
 
 
-def run(metadata, cast, keywords):
+def run(metadata, cast, keywords, films_to_recommend):
     metadata = refactor_data(metadata, cast, keywords)
 
     cosine_similarity_matrix = create_cosine_similarity_matrix(metadata)
@@ -70,10 +71,4 @@ def run(metadata, cast, keywords):
     # Создание обратного отображения
     metadata, new_titles_as_indices = reset_indexes(metadata)
 
-    printer.print_data("Сгенерированные предсказания для 'The Dark Knight Rises'",
-                       prediction.get_recommendations(metadata, new_titles_as_indices, cosine_similarity_matrix,
-                                                      'The Dark Knight Rises'))
-
-    printer.print_data("Сгенерированные предсказания для 'The Godfather'",
-                       prediction.get_recommendations(metadata, new_titles_as_indices, cosine_similarity_matrix,
-                                                      'The Godfather'))
+    recommend_realiser.recommend(metadata, new_titles_as_indices, cosine_similarity_matrix, films_to_recommend)
