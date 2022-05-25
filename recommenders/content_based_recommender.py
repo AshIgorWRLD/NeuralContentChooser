@@ -34,13 +34,13 @@ def print_ten_words_example(tfidf, start_idx, message):
 def show_calculated_word_statistic(tfidf):
     print_ten_words_example(tfidf, 200, "цифр")
     print_ten_words_example(tfidf, 4000, "слов на букву 'A'")
-    print_ten_words_example(tfidf, 25000, "слов на букву 'F'")
+    print_ten_words_example(tfidf, 24000, "слов на букву 'F'")
 
 
 def calculate_cosine_simulation_matrix(tfidf_matrix):
     cosine_similarity_matrix = linear_kernel(tfidf_matrix.astype(np.float32), tfidf_matrix.astype(np.float32))
 
-    print("Примеры коэффициентов косинусоидальной схожести", cosine_similarity_matrix[1][:10])
+    printer.print_data("Примеры коэффициентов косинусоидальной схожести", cosine_similarity_matrix[1][:10])
     return cosine_similarity_matrix
 
 

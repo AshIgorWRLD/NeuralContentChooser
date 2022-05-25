@@ -13,8 +13,8 @@ def imdb_top_form_formula(metadata):
     # получение IMDB формулы подсчета рейтинга фильмов
     def weighted_imdb_formula_rating(data, m=min_estimation_number, c=average_rating):
         v = data['vote_count']
-        R = data['vote_average']
-        return (v / (v + m) * R) + (m / (m + v) * c)
+        r = data['vote_average']
+        return (v / (v + m) * r) + (m / (m + v) * c)
 
     # добавляем столбец 'score' в который записываем рейтинг, посчитанный нашей формулой imb
     filtered_metadata['score'] = filtered_metadata.apply(weighted_imdb_formula_rating, axis=1)

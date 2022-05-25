@@ -42,16 +42,16 @@ def refactor_data(metadata, cast, keywords):
     metadata = data_feature_converter.convert_array(metadata, ['cast', 'keywords', 'director', 'genres'],
                                                     my_data_format_converter.clean_data)
 
-    metadata = data_feature_converter.convert_array_with_axis(metadata, ['soup'], join_columns, 1)
+    metadata = data_feature_converter.convert_array_with_axis(metadata, ['keys'], join_columns, 1)
 
     printer.print_data("Пример новых данных основанных на ключевых словах, занесенных в датасет",
-                       metadata[['soup']].head(5))
+                       metadata[['keys']].head(5))
     return metadata
 
 
 def create_cosine_similarity_matrix(metadata):
     count = CountVectorizer(stop_words='english')
-    count_matrix = count.fit_transform(metadata['soup'])
+    count_matrix = count.fit_transform(metadata['keys'])
 
     cosine_similarity_matrix = cosine_similarity(count_matrix.astype(np.float32), count_matrix.astype(np.float32))
     return cosine_similarity_matrix
